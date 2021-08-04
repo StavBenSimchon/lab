@@ -32,6 +32,6 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       - name: get jq
-        run: apt install jq
+        run: sudo apt install jq
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
