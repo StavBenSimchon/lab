@@ -31,7 +31,7 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
       - name: Run version
-        run: export VERSION="$(jq -er .version package.json)""
+        run: export VERSION="$(jq -er .version package.json)"
       - name: Run a multi-line script
         run: |
           echo $VERSION
