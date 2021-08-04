@@ -18,7 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: init ubuntu
+        run: sudo apt install jq
+      - name: checkout
+        uses: actions/checkout@v2
       - name: Testing
         uses: StavBenSimchon/gh-action-example@main
         with:
@@ -27,11 +30,12 @@ jobs:
           who-to-greet: test
       - name: Run a one-line script
         run: echo Hello, world!
+      - name: Run version
+        run: export VERSION="$(jq -er .version package.json)""
       - name: Run a multi-line script
         run: |
+          echo $VERSION
           echo Add other actions to build,
           echo test, and deploy your project.
-      - name: get jq
-        run: sudo apt install jq
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
