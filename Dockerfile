@@ -1,3 +1,7 @@
 FROM alpine:edge
+WORKDIR /app
+RUN apk add --no-cache jq npm
 
-RUN apk add --no-cache jq
+COPY ./package.json .
+
+RUN npm i
