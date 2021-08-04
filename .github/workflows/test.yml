@@ -17,6 +17,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VERSION: ''
     steps:
       - name: init ubuntu
         run: sudo apt install jq
@@ -31,11 +33,14 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
       - name: Run version
-        run: export VERSION="$(jq -er .version package.json)"
+        run: |
+          echo "VERSION=$(jq -er .version package.json)" >> $GITHUB_ENV
       - name: Run a multi-line script
         run: |
           echo $VERSION
+          echo ${{ github }}
+          env
           echo Add other actions to build,
           echo test, and deploy your project.
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s) --build-arg NPM_AUTH_TOKEN "${{ secrets.NPM_AUTH_TOKEN}}"
