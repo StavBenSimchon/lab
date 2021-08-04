@@ -1,4 +1,5 @@
-FROM alpine:edge
+# FROM alpine:edge
+FROM gcr.io/p3marketers-manage/crm-app:crm-app-latest as crm-app
 WORKDIR /app
 RUN apk add --no-cache jq npm
 ARG NPM_AUTH_TOKEN
