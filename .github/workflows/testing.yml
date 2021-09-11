@@ -26,4 +26,4 @@ jobs:
     steps:
       - name: Run a multi-line script
         run: |
-          curl ipinfo.io/ip
+          curl -sSf ipinfo.io/ip
