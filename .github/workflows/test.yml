@@ -1,6 +1,5 @@
-# name: CI
-
-# on:
+name: TEST
+on:
 #   # schedule:
 #   #   - cron:  '0 */2 * * *'
 #   push:
@@ -11,10 +10,15 @@
 #     - main 
 
 #   # Allows you to run this workflow manually from the Actions tab
-#   workflow_dispatch:
+  workflow_dispatch:
 
 # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-# jobs:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "${{ github.event.head_commit.message }}"
 #   build:
 #     runs-on: ubuntu-latest
 #     # container: { image: alpine }
