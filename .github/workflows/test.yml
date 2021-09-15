@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "${{ github.event.head_commit.message }}"
+          echo ">>"
           touch test-$(date +%H:%M)
           git add -A 
           git commit -m 'test'
