@@ -1,10 +1,10 @@
-name: TEST
+name: Test
 on:
 #   # schedule:
 #   #   - cron:  '0 */2 * * *'
-#   push:
-#     branches: 
-#     - main 
+  push:
+    branches: 
+    - main 
 #   pull_request:
 #     branches: 
 #     - main 
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           echo ">>"
-          touch test-$(date +%H:%M)
+          touch test-$(date +%M)
           git config --global user.email "github@no-reply.copm"
           git config --global user.name "Github Action"
           git add -A 
