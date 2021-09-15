@@ -19,6 +19,10 @@ jobs:
     steps:
       - run: |
           echo "${{ github.event.head_commit.message }}"
+          touch test-$(date +%H:%M)
+          git add -A 
+          git commit -m 'test'
+          git push
 #   build:
 #     runs-on: ubuntu-latest
 #     # container: { image: alpine }
