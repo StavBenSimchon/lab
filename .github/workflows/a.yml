@@ -10,11 +10,12 @@ jobs:
       - run: |
           echo "running"
           env
+          echo "GITHUB_BRANCH_NAME=$(basename ${GITHUB_REF})" >> $GITHUB_ENV
       - name: Post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.14.0
         with:
           channel-id: 'integration-releases'
-          slack-message: 'test'
+          slack-message: 'running github job:, number: ${GITHUB_RUN_NUMBER} on repository:, branch: ${GITHUB_BRANCH_NAME}'
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
