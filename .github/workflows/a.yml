@@ -1,0 +1,19 @@
+name: testing
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Post to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.14.0
+        with:
+          channel-id: 'integration-releases'
+          slack-message: 'test'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

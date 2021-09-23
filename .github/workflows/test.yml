@@ -1,31 +1,32 @@
-name: Test
-on:
-#   # schedule:
-#   #   - cron:  '0 */2 * * *'
-  push:
-    branches: 
-    - main 
-#   pull_request:
+# name: Test
+# on:
+# #   # schedule:
+# #   #   - cron:  '0 */2 * * *'
+#   push:
 #     branches: 
 #     - main 
+# #   pull_request:
+# #     branches: 
+# #     - main 
 
-#   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+# #   # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
 
-# # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: |
-          echo ">>"
-          touch test-$(date +%M)
-          git config --global user.email "github@no-reply.copm"
-          git config --global user.name "Github Action"
-          git add -A 
-          git commit -m 'test'
-          git push
+# # # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - run: |
+#           git config --global user.email "github@no-reply.copm"
+#           git config --global user.name "Github Action"
+
+#           sed -i '2i\'${LINE}'\' release_notes.md
+
+#           git add -A 
+#           git commit -m 'test'
+#           git push
 #   build:
 #     runs-on: ubuntu-latest
 #     # container: { image: alpine }
