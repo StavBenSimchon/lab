@@ -7,15 +7,17 @@ jobs:
   tet:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - id: vars
+        run: |
           echo "running"
           env
           echo "GITHUB_BRANCH_NAME=$(basename ${GITHUB_REF})" >> $GITHUB_ENV
+          echo ::set-output name=slack_msg::"running github job:, number: ${GITHUB_RUN_NUMBER} on repository:, branch: ${GITHUB_BRANCH_NAME}"
       - name: Post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.14.0
         with:
           channel-id: 'integration-releases'
-          slack-message: "running github job:, number: ${GITHUB_RUN_NUMBER} on repository:, branch: ${GITHUB_BRANCH_NAME}"
+          slack-message: ${{ steps.vars.outputs.slack_msg }}
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
