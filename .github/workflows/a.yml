@@ -7,8 +7,9 @@ jobs:
   tet:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - run: |
+          echo "running"
+          env
       - name: Post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.14.0
