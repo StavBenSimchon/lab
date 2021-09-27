@@ -7,17 +7,30 @@ jobs:
   tet:
     runs-on: ubuntu-latest
     steps:
-      - id: vars
+      - name: setup vars
+        id: vars
         run: |
-          echo "running"
-          env
-          echo "GITHUB_BRANCH_NAME=$(basename ${GITHUB_REF})" >> $GITHUB_ENV
-          echo ::set-output name=slack_msg::"running github job:, number: ${GITHUB_RUN_NUMBER} on repository:, branch: ${GITHUB_BRANCH_NAME}"
-      - name: Post to a Slack channel
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        with:
-          channel-id: 'integration-releases'
-          slack-message: ${{ steps.vars.outputs.slack_msg }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          set +e
+
+          TICKET=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | egrep -o "[A-Z]{,3}-[0-9]+" )
+          if [ -z "${TICKET}" ]; then
+            echo "::set-output name=jira_ticket_f::false"
+            echo "no ticket in commit"
+          else
+            echo "::set-output name=jira_ticket_f::true"
+            echo "::set-output name=jira_ticket::${TICKET}"
+            echo "commit from ticket: ${TICKET}"
+          fi
+
+          # preparing slack slack-message
+
+          echo "::set-output name=slack_msg::\"RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}\""
+
+          RELEASE_NAME=$(curl -sSf --request GET \
+          --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" \
+          --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' \
+          --header 'Accept: application/json' | jq '.values[0].name')
+
+          echo "release from jira: ${RELEASE_NAME}"
+
+          echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
