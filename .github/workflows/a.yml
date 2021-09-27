@@ -26,7 +26,7 @@ jobs:
           echo ">2"
           # preparing slack slack-message
 
-          echo ::set-output name=slack_msg::"RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}"
+          echo ::set-output name=slack_msg::RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}
           echo ">3"
           RELEASE_NAME=$(curl -sSf --request GET --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' --header 'Accept: application/json' | jq '.values[0].name')
 
@@ -34,4 +34,4 @@ jobs:
 
           echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
       - run: |
-          eho "${{ steps.vars.output.slack_msg }}"
+          echo "${{ steps.vars.output.slack_msg }}"
