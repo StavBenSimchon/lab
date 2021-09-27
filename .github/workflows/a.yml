@@ -25,7 +25,7 @@ jobs:
           echo ">2"
           # preparing slack slack-message
 
-          echo "::set-output name=slack_msg::\"RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}\""
+          echo "::set-output name=slack_msg::RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}"
           echo ">3"
           RELEASE_NAME=$(curl -sSf --request GET \
           --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" \
