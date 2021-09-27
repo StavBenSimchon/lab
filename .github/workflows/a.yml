@@ -24,6 +24,9 @@ jobs:
             echo "commit from ticket: ${TICKET}"
           fi
           echo ">2"
+          echo ">> ${GITHUB_JOB}"
+          echo ">> ${GITHUB_RUN_NUMBER}"
+          echo ">> ${GITHUB_REF}"
           env
           # preparing slack slack-message
           MSG="RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}"
