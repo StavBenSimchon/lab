@@ -13,6 +13,7 @@ jobs:
           set +e
 
           TICKET=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | egrep -o "[A-Z]{,3}-[0-9]+" )
+          echo ">1"
           if [ -z "${TICKET}" ]; then
             echo "::set-output name=jira_ticket_f::false"
             echo "no ticket in commit"
@@ -21,11 +22,11 @@ jobs:
             echo "::set-output name=jira_ticket::${TICKET}"
             echo "commit from ticket: ${TICKET}"
           fi
-
+          echo ">2"
           # preparing slack slack-message
 
           echo "::set-output name=slack_msg::\"RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}\""
-
+          echo ">3"
           RELEASE_NAME=$(curl -sSf --request GET \
           --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" \
           --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' \
