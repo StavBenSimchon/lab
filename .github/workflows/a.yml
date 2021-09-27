@@ -27,7 +27,7 @@ jobs:
           echo ">> ${GITHUB_JOB}"
           echo ">> ${GITHUB_RUN_NUMBER}"
           echo ">> ${GITHUB_REF}"
-          env
+          #env
           # preparing slack slack-message
           MSG="RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}"
           echo ">> $MSG"
