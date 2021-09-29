@@ -9,50 +9,55 @@ env:
 jobs:
   tet:
     runs-on: ubuntu-latest
+    outputs:
+      o1: ${{ steps.te.outputs.test }}
     steps:
-      - name: setup vars
-        id: vars
+      - id: te
         run: |
-          set +e
-          set +x
+          echo ::set-output name=test::hello
+      # - name: setup vars
+      #   id: vars
+      #   run: |
+      #     set +e
+      #     set +x
 
-          TICKET=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | egrep -o "[A-Z]{,3}-[0-9]+" )
-          echo ">1"
-          if [ -z "${TICKET}" ]; then
-            echo ::set-output name=jira_ticket_f::false
-            echo "no ticket in commit"
-          else
-            echo ::set-output name=jira_ticket_f::true
-            echo ::set-output name=jira_ticket::${TICKET}
-            echo "commit from ticket: ${TICKET}"
-          fi
-          echo ">2"
-          echo ">> ${GITHUB_JOB}"
-          echo ">> ${GITHUB_RUN_NUMBER}"
-          echo ">> ${GITHUB_REF}"
-          echo ">> ${TICKET}"
-          echo "RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF})"
-          #env
-          # preparing slack slack-message
-          #MSG="RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}"
-          #echo ">> $MSG"
-          #echo ::set-output name=slack_msg::$MSG
-          echo ">3"
-          RELEASE_NAME=$(curl -sSf --request GET --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' --header 'Accept: application/json' | jq -er '.values[0].name')
+      #     TICKET=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | egrep -o "[A-Z]{,3}-[0-9]+" )
+      #     echo ">1"
+      #     if [ -z "${TICKET}" ]; then
+      #       echo ::set-output name=jira_ticket_f::false
+      #       echo "no ticket in commit"
+      #     else
+      #       echo ::set-output name=jira_ticket_f::true
+      #       echo ::set-output name=jira_ticket::${TICKET}
+      #       echo "commit from ticket: ${TICKET}"
+      #     fi
+      #     echo ">2"
+      #     echo ">> ${GITHUB_JOB}"
+      #     echo ">> ${GITHUB_RUN_NUMBER}"
+      #     echo ">> ${GITHUB_REF}"
+      #     echo ">> ${TICKET}"
+      #     echo "RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF})"
+      #     #env
+      #     # preparing slack slack-message
+      #     #MSG="RUNNING github job:${GITHUB_JOB}, number: ${GITHUB_RUN_NUMBER} on repository:, branch: $(basename ${GITHUB_REF}"
+      #     #echo ">> $MSG"
+      #     #echo ::set-output name=slack_msg::$MSG
+      #     echo ">3"
+      #     RELEASE_NAME=$(curl -sSf --request GET --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' --header 'Accept: application/json' | jq -er '.values[0].name')
 
-          echo "release from jira: ${RELEASE_NAME}"
+      #     echo "release from jira: ${RELEASE_NAME}"
 
-          echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
-          echo "# 1.1.1" > test.md
-      - run: |
-          if ! (head -n 1 ./test.md | grep ${RELEASE_NAME});then
-            echo "Release name has changed to: ${RELEASE_NAME}, adding it to release notes header"
-          fi
+      #     echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
+      #     echo "# 1.1.1" > test.md
+      # - run: |
+      #     if ! (head -n 1 ./test.md | grep ${RELEASE_NAME});then
+      #       echo "Release name has changed to: ${RELEASE_NAME}, adding it to release notes header"
+      #     fi
   tes:
     needs: tet
     runs-on: ubuntu-latest
     steps:
       - name: test
         run: |
-          echo "${{ steps.vars.outputs.jira_ticket_f }}"
+          echo "${{ needs.tet.outputs.o1 }}"
 
