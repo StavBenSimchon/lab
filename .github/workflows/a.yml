@@ -35,7 +35,7 @@ jobs:
           #echo ">> $MSG"
           #echo ::set-output name=slack_msg::$MSG
           echo ">3"
-          RELEASE_NAME=$(curl -sSf --request GET --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' --header 'Accept: application/json' | jq '.values[0].name')
+          RELEASE_NAME=$(curl -sSf --request GET --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' --header 'Accept: application/json' | jq -er '.values[0].name')
 
           echo "release from jira: ${RELEASE_NAME}"
 
