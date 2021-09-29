@@ -49,6 +49,7 @@ jobs:
             echo "Release name has changed to: ${RELEASE_NAME}, adding it to release notes header"
           fi
   tes:
+    needs: tet
     runs-on: ubuntu-latest
     steps:
       - name: test
