@@ -3,6 +3,9 @@ name: testing
 on:
   workflow_dispatch:
 
+env:
+  IMAGE_TAG_ADD: intergration
+
 jobs:
   tet:
     runs-on: ubuntu-latest
@@ -45,5 +48,10 @@ jobs:
           if ! (head -n 1 ./test.md | grep ${RELEASE_NAME});then
             echo "Release name has changed to: ${RELEASE_NAME}, adding it to release notes header"
           fi
-
+  tes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: |
+          echo "${{ steps.vars.outputs.jira_ticket_f }}"
 
