@@ -60,7 +60,7 @@ jobs:
     steps:
       - name: test
         run: |
-          if [ -z "${{ needs.tet.outputs.o1 }" ];then
+          if [ -z "${{ needs.tet.outputs.o1 }}" ];then
             echo empty
           fi
           echo ">>${{ needs.tet.outputs.o1 }}"
