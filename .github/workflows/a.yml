@@ -59,7 +59,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        if: needs.tet.outputs.o1 != ''
         run: |
+          if [ -z "${{ needs.tet.outputs.o1 }" ];then
+            echo empty
+          fi
           echo ">>${{ needs.tet.outputs.o1 }}"
 
