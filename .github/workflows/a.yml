@@ -14,7 +14,8 @@ jobs:
     steps:
       - id: te
         run: |
-          echo ::set-output name=test::hello
+          # echo ::set-output name=test::hello
+          echo ya
       # - name: setup vars
       #   id: vars
       #   run: |
@@ -59,5 +60,5 @@ jobs:
     steps:
       - name: test
         run: |
-          echo "${{ needs.tet.outputs.o1 }}"
+          echo ">>${{ needs.tet.outputs.o1 }}"
 
