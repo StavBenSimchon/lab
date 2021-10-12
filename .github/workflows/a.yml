@@ -1,221 +1,28 @@
-name: CI-integration
+name: testing
 
 on:
-  # workflow_run:
-  #   workflows: ["Static-Code-Analyze"]
-  #   types:
-  #     - completed
-  push:
-    branches:
-    - integration
-
   workflow_dispatch:
-
-concurrency:
-  group: ci
 
 env:
   IMAGE_TAG_ADD: intergration
-  APP_IMAGE_NAME: gcr.io/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/flowchart-executor
-  ENV_TAG: integration
-  DEPLOYMENT_NAME: flowchart-executor
 
 jobs:
-  setup-build-publish:
+  tet:
     runs-on: ubuntu-latest
     outputs:
-      jira_ticket_sum: ${{ steps.release-notes.outputs.jira_ticket_sum }}
+      o1: ${{ steps.te.outputs.test }}
     steps:
-      # SETUP
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: jira login
-        uses: atlassian/gajira-login@master
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-      - name: gcloud login
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.GCP_REGISTRY_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_REGISTRY_SA_KEY }}
-          export_default_credentials: true
-      - name: docker setup
-        run: gcloud auth configure-docker
-      # vars setup
-      - name: setup vars
-        id: vars
+      - id: te
         run: |
-          set +e
-
-          TICKET=$(echo "${{ github.event.head_commit.message }}" | head -n 1 | egrep -o "[A-Z]{,3}-[0-9]+" )
-          if [ -z "${TICKET}" ]; then
-            echo ::set-output name=jira_ticket_f::false
-            echo "no ticket in commit"
-          else
-            echo ::set-output name=jira_ticket_f::true
-            echo ::set-output name=jira_ticket::${TICKET}
-            echo "commit from ticket: ${TICKET}"
-          fi
-
-          # preparing slack slack-message
-          echo ::set-output name=slack_msg::RUNNING github workflow:${GITHUB_WORKFLOW}, number: ${GITHUB_RUN_NUMBER} on repository:${GITHUB_REPOSITORY}, branch: $(basename ${GITHUB_REF})
-
-          RELEASE_NAME=$(curl -sSf --request GET --user "${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}" --url '${{ secrets.JIRA_BASE_URL }}/rest/agile/1.0/board/18/version?released=false' --header 'Accept: application/json' | jq -er '.values | sort_by(.releaseDate) | .[0].name')
-
-          echo "release from jira: ${RELEASE_NAME}"
-
-          echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
-
-      - name: Post to a Slack channel
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        with:
-          channel-id: 'integration-releases'
-          slack-message: ${{ steps.vars.outputs.slack_msg }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
-      - name: update release notes
-        id: release-notes
-        env:
-          RELEASE_NOTES_FILE: release_notes.md
-        if: ${{ steps.vars.outputs.jira_ticket_f == 'true' }}
-        run: |
-          git config --global user.email "github@no-reply.copm"
-          git config --global user.name "Github Action"
-
-          [ ! -f ./${RELEASE_NOTES_FILE} ] && exit 1
-
-          # check if released changed and update release notes first line with the new jira release
-
-          if ! (head -n 1 ./${RELEASE_NOTES_FILE} | grep ${RELEASE_NAME});then
-            echo "Release name has changed to: ${RELEASE_NAME}, adding it to release notes header"
-            sed -i "1i# ${RELEASE_NAME}" ./${RELEASE_NOTES_FILE}
-          fi
-
-          TLINE="$(curl -sSf --request GET --connect-timeout 15 --header 'Accept: application/json' \
-          --user '${{ secrets.JIRA_USER_EMAIL }}:${{ secrets.JIRA_API_TOKEN }}' --url '${{ secrets.JIRA_BASE_URL }}/rest/api/3/issue/${{ steps.vars.outputs.jira_ticket }}' \
-          2>/dev/null | jq -er '.fields.summary' | tr -d '\"')"
-
-          LINE="- ${{ steps.vars.outputs.jira_ticket }}: ${TLINE}"
-          echo ::set-output name=jira_ticket_sum::${LINE}
-
-          sed -i "2i${LINE}" ${RELEASE_NOTES_FILE}
-          echo "print lines from release notes"
-          echo "----"
-          head -n 10 ${RELEASE_NOTES_FILE}
-          echo "
-          ---"
-
-          git add ${RELEASE_NOTES_FILE}
-
-      - name: get commit sha
-        run: |
-          # get the latests commit sha for building images
-          echo "GITHUB_SHA_SHORT=$(echo $(git rev-parse HEAD) | cut -c 1-7)" >> $GITHUB_ENV
-
-      - name: Build and Push Docker image
-        run: |
-          cd app
-          docker pull ${APP_IMAGE_NAME}:latest
-          docker build . -t ${APP_IMAGE_NAME}:${GITHUB_SHA_SHORT}
-          docker push ${APP_IMAGE_NAME}:${GITHUB_SHA_SHORT}
-
-      - name: add tags
-        run: |
-          gcloud container images add-tag --quiet \
-              ${APP_IMAGE_NAME}:${GITHUB_SHA_SHORT} \
-              ${APP_IMAGE_NAME}:${ENV_TAG} \
-              ${APP_IMAGE_NAME}:latest
-
-# additional steps
-
-      - name: Transition issue
-        if: ${{ steps.vars.outputs.jira_ticket_f == 'true' }}
-        id: transition
-        uses: atlassian/gajira-transition@master
-        with:
-          issue: ${{ steps.vars.outputs.jira_ticket }}
-          transition: "Integration"
-
-      - name: Comment on issue
-        if: ${{ steps.vars.outputs.jira_ticket_f == 'true' }}
-        uses: atlassian/gajira-comment@master
-        with:
-          issue: ${{ steps.vars.outputs.jira_ticket }}
-          comment: "image pushed"
-
-  # DEPOY
-  deploy:
-    needs: setup-build-publish
+          env
+  tes:
+    needs: tet
     runs-on: ubuntu-latest
     steps:
-      - name: gcloud setup
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.GCP_INTEG_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_INTEG_SA_KEY }}
-          export_default_credentials: true
-
-      - name: gcloud setup components
-        run: gcloud components install kubectl --quiet
-
-      - name: gke setup
-        uses: google-github-actions/get-gke-credentials@v0.2.1
-        with:
-          cluster_name: ${{ secrets.GCP_INTEG_CLUSTER }}
-          location: ${{ secrets.GCP_INTEG_ZONE }}
-          project_id: ${{ secrets.GCP_INTEG_PROJECT_ID }}
-
-      - name: Use kubectl CLI
-        env:
-          DEPLOYMENT_NAME: crm-app
+      - name: test
         run: |
-          kubectl get deployment -l imagename=${DEPLOYMENT_NAME} -o name | while read deployment; do
-            kubectl rollout restart ${deployment}
-          done
-          kubectl get deployments -l imagename=${DEPLOYMENT_NAME}
-
-  success:
-    needs: deploy
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-      - id: slack-passed
-        run: |
-          echo "succeed"
-          DEFAULT_MSG="SUCCESS github workflow:${GITHUB_WORKFLOW}, number: ${GITHUB_RUN_NUMBER} on repository:${GITHUB_REPOSITORY}, branch: $(basename ${GITHUB_REF})"
-          SLACK_MSG="${DEFAULT_MSG}"
-          if [ ! -z "${{needs.setup-build-publish.outputs.jira_ticket_sum}}" ];then
-            SLACK_MSG="${DEFAULT_MSG}\n ticket:${{needs.setup-build-publish.outputs.jira_ticket_sum}}"
+          if [ -z "${{ needs.tet.outputs.o1 }}" ];then
+            echo empty
           fi
-          echo ::set-output name=slack_msg::${SLACK_MSG}
-      - name: Post to a Slack channel
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        with:
-          channel-id: 'integration-releases'
-          slack-message: ${{ steps.slack-passed.outputs.slack_msg }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          echo ">>${{ needs.tet.outputs.o1 }}"
 
-  failed:
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
-      - id: slack-failed
-        run: |
-          echo "failed"
-          echo ::set-output name=slack_msg::FAILED github workflow:${GITHUB_WORKFLOW}, number: ${GITHUB_RUN_NUMBER} on repository:${GITHUB_REPOSITORY}, branch: $(basename ${GITHUB_REF})
-      - name: Post to a Slack channel
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        with:
-          channel-id: 'integration-releases'
-          slack-message: ${{ steps.slack-failed.outputs.slack_msg }}
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - run: exit 1
