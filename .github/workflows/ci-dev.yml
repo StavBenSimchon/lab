@@ -14,6 +14,8 @@ jobs:
     steps:
       - run: |
           echo "running build"
+          echo "GITHUB_SHA_SHORT=$(echo $(git rev-parse HEAD) | cut -c 1-7)" >> $GITHUB_ENV
+          echo "GITHUB_SHA_SHORT: ${GITHUB_SHA_SHORT}"
       - if: env.MSG == 'HELLO1'
         run: |
           echo running
