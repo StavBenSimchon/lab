@@ -1,10 +1,10 @@
-name: Static-Code-Analyze
+name: PR
 on: 
   pull_request:
     branches:
       - 'develop'
 jobs:
-  Static-Code-Analyze:
+  PR:
     runs-on: ubuntu-latest
     steps:
       - run: |
