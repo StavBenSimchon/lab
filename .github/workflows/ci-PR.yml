@@ -1,0 +1,11 @@
+name: Static-Code-Analyze
+on: 
+  pull_request:
+    branches:
+      - 'develop'
+jobs:
+  Static-Code-Analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "running static code check"

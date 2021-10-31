@@ -1,0 +1,15 @@
+name: CI-integration
+
+on:
+  push:
+    branches:
+    - develop
+
+  workflow_dispatch:
+
+jobs:
+  Static-Code-Analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "running build"
