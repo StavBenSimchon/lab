@@ -16,6 +16,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - run: |
+          echo "test" > a
+          git add -A
+          git commit -m 'test'
+          git push -f
       - id: test
         run: |
           echo "::set-output name=msg::hello"
