@@ -23,6 +23,7 @@ jobs:
           echo "test" >> a
           git add -A
           git commit -m 'test'
+      - run: |
           git push -f
       - id: test
         run: |
