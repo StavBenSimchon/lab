@@ -1,4 +1,4 @@
-name: PR
+name: ci-PR
 on: 
   pull_request:
     branches:

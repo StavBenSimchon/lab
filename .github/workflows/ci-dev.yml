@@ -1,4 +1,4 @@
-name: CI-integration
+name: CI-dev
 
 on:
   push:
@@ -9,11 +9,16 @@ on:
 env:
   MSG: HELLO
 jobs:
-  Static-Code-Analyze:
+  ci:
     runs-on: ubuntu-latest
+    outputs:
+      jira_ticket_sum: ${{ steps.test.outputs.msg }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - id: test
+        run: |
+          echo  echo ::set-output name=msg::
       - name: get commit sha
         run: |
           # get the latests commit sha for building images
@@ -29,3 +34,10 @@ jobs:
       - if: env.GITHUB_SHA_SHORT == 'AA'
         run: |
           echo running ${{ env.GITHUB_SHA_SHORT }}
+  success:
+    runs-on: ubuntu-latest
+    steps:
+      - id: slack-passed
+        run: |
+          echo "succeed"
+          echo ">>${{needs.ci.outputs.msg}}"
