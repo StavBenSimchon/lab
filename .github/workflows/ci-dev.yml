@@ -12,7 +12,7 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     outputs:
-      o1: ${{ steps.test.outputs.msg }}
+      msg: ${{ steps.test.outputs.msg }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,4 +41,4 @@ jobs:
       - id: slack-passed
         run: |
           echo "succeed"
-          echo ">>${{needs.ci.outputs.o1}}"
+          echo ">>${{needs.ci.outputs.msg}}"
