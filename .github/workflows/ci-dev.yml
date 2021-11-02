@@ -35,6 +35,7 @@ jobs:
         run: |
           echo running ${{ env.GITHUB_SHA_SHORT }}
   success:
+    needs: ci
     runs-on: ubuntu-latest
     steps:
       - id: slack-passed
