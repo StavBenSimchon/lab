@@ -20,7 +20,7 @@ jobs:
       - run: |
           git config --global user.email "github@no-reply.copm"
           git config --global user.name "Github Action"
-          echo "test" > a
+          echo "test" >> a
           git add -A
           git commit -m 'test'
           git push -f
