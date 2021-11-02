@@ -12,13 +12,13 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     outputs:
-      jira_ticket_sum: ${{ steps.test.outputs.msg }}
+      o1: ${{ steps.test.outputs.msg }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - id: test
         run: |
-          echo  echo ::set-output name=msg::
+          echo  echo ::set-output name=msg::hello
       - name: get commit sha
         run: |
           # get the latests commit sha for building images
@@ -41,4 +41,4 @@ jobs:
       - id: slack-passed
         run: |
           echo "succeed"
-          echo ">>${{needs.ci.outputs.msg}}"
+          echo ">>${{needs.ci.outputs.o1}}"
