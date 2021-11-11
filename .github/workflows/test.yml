@@ -5,7 +5,7 @@ on:
 
 env:
   IMAGE_TAG_ADD: intergration
-  JENKINS_INTEG_URL: 'https://tp-jenkins.3mk.io/view/CRM%20CI%20CD/job/CRM-AUTO/build\?token\='
+  JENKINS_INTEG_URL: 'https://130.211.58.18/view/CRM%20CI%20CD/job/CRM-AUTO/build\?token\='
 
 jobs:
   test:
