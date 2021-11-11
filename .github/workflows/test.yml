@@ -19,7 +19,7 @@ jobs:
       - name: testing
         id: test
         run: |
-          curl -u '${{ secrets.JENKINS }}' ${{ env.JENKINS_INTEG_URL }}${{ secrets.JENKINS_JOB_TOKEN }}
+          curl -sSfL -u '${{ secrets.JENKINS }}' ${{ env.JENKINS_INTEG_URL }}${{ secrets.JENKINS_JOB_TOKEN }}
   tes:
     needs: test
     runs-on: ubuntu-latest
