@@ -21,7 +21,7 @@ jobs:
         run: |
           curl -u '${{ secrets.JENKINS }}' ${{ env.JENKINS_INTEG_URL }}${{ secrets.JENKINS_JOB_TOKEN }}
   tes:
-    needs: tet
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: test
