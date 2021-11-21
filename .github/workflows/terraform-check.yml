@@ -1,4 +1,4 @@
-name: CD-Integration
+name: terraform-check
 
 on:
   workflow_dispatch:
