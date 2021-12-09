@@ -12,6 +12,11 @@ jobs:
     outputs:
       o1: ${{ steps.te.outputs.test }}
     steps:
+      - name: testing
+        id: test1
+        run: |
+            env
+
       - id: te
         run: |
           env
