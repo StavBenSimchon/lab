@@ -15,7 +15,7 @@ jobs:
     steps:
       - id: skip
         run: |
-          echo "::set-output name=skip_f::false"
+          echo ::set-output name=skip_f::false
       - id: te
         run: |
           env
