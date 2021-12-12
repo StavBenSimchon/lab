@@ -21,9 +21,10 @@ jobs:
           env
 
       - name: testing1
+        if: ${{ steps.skip.outputs.skip_f == 'false' }}
         id: test1
         run: |
-          echo "${{ secrets.JENKINS }} ${{ env.JENKINS_INTEG_URL }}${{ secrets.JENKINS_JOB_TOKEN }}"
+          echo ">>"
   tes:
     needs: test
     if: needs.test.outputs.skip == 'false'
