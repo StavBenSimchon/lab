@@ -11,8 +11,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      o1: ${{ steps.te.outputs.test }}
+      skip: ${{ steps.skip.skip_f }}
     steps:
+      - id: skip
+        run: |
+          echo ::set-output name=skip_f::false 
       - id: te
         run: |
           env
@@ -27,6 +30,7 @@ jobs:
           curl -sSfL -m 15 -u '${{ secrets.JENKINS }}' ${{ env.JENKINS_INTEG_URL }}${{ secrets.JENKINS_JOB_TOKEN }}
   tes:
     needs: test
+    if: needs.test.outputs.skip == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: test
