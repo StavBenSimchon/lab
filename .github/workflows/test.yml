@@ -11,7 +11,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     outputs:
-      skip: ${{ steps.skip.skip_f }}
+      skip: ${{ steps.skip.outputs.skip_f }}
     steps:
       - id: skip
         run: |
