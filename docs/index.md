@@ -4,6 +4,7 @@
 
 - [linux](https://stavbensimchon.github.io/lab/cheatsheet/linux.html)
 - [alpine](https://stavbensimchon.github.io/lab/cheatsheet/alpine.html)
+- [harden-alpine](https://stavbensimchon.github.io/lab/cheatsheet/harden-alpine.html)
 - [certificates](https://stavbensimchon.github.io/lab/cheatsheet/certificates.html)
 - [docker](https://stavbensimchon.github.io/lab/cheatsheet/docker.html)
 - [gcloud](https://stavbensimchon.github.io/lab/cheatsheet/gcloud.html)
