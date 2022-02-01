@@ -13,6 +13,7 @@
 - [jenkins](https://stavbensimchon.github.io/lab/cheatsheet/jenkins.html)
 - [k3d](https://stavbensimchon.github.io/lab/cheatsheet/k3d.html)
 - [kubernetes](https://stavbensimchon.github.io/lab/cheatsheet/kubernetes.html)
+- [helm](https://stavbensimchon.github.io/lab/cheatsheet/helm.html)
 - [terraform](https://stavbensimchon.github.io/lab/cheatsheet/terraform.html)
 - [ubuntu](https://stavbensimchon.github.io/lab/cheatsheet/ubuntu.html)
 - [cheatsheet](https://stavbensimchon.github.io/lab/cheatsheet/cheatsheet.html)
