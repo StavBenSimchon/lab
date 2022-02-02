@@ -1,8 +1,8 @@
 # helm
-[Menu](https://stavbensimchon.github.io/lab)
-https://github.com/helm/chartmuseum
-https://github.com/chartmuseum/chart-scanner
-https://github.com/helm/chartmuseum/pkgs/container/chartmuseum/versions
+* [Menu](https://stavbensimchon.github.io/lab)
+* [https://github.com/helm/chartmuseum]
+* [https://github.com/chartmuseum/chart-scanner]
+* [https://github.com/helm/chartmuseum/pkgs/container/chartmuseum/versions]
 ```bash
 nerdctl run -it --rm --network chartmuseum_default -v ${PWD:2}:/charts chartmuseum/chart-scanner:v0.1.0 --debug --storage=local --storage-local-rootdir=/charts
 
