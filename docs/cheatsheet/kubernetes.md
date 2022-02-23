@@ -37,3 +37,10 @@ kubectl rollout restart daemonset <ds name>
 kubectl config set-context --current --namespace=my-namespace
 
 ```
+
+## networking
+
+```bash
+# dns for cross namespaces
+{{service_name}}.{{namespace}}.svc.cluster.local
+```
