@@ -2,6 +2,11 @@
 [Menu](https://stavbensimchon.github.io/lab)
 
 ```bash
+# remove shutdown pods
+kubectl delete pods --field-selector status.phase=Failed -A --ignore-not-found=true
+
+
+
 kubectl config set-context $(kubectl config current-context) --namespace=${NAMESPACE}
 
 kubectl create serviceaccount jenkins -n default
