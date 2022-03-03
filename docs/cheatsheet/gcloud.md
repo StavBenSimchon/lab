@@ -4,7 +4,11 @@
 - help (https://cloud.google.com/sdk/docs/cheatsheet)
 
 ```bash
+# roles
 
+gcloud iam roles list | grep "name:"
+
+gcloud iam roles describe roles/compute.instanceAdmin
 
 gcloud init
 
