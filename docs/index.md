@@ -18,6 +18,7 @@
 - [ubuntu](https://stavbensimchon.github.io/lab/cheatsheet/ubuntu.html)
 - [cheatsheet](https://stavbensimchon.github.io/lab/cheatsheet/cheatsheet.html)
 - [helper-old](https://stavbensimchon.github.io/lab/cheatsheet/helper-old.html)
+- [helper-old](https://stavbensimchon.github.io/lab/cheatsheet/openssl.html)
 - [header](#special-header)
 
 ### greate header {#special-header}
