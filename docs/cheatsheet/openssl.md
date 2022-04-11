@@ -21,4 +21,9 @@ key – CAcreateserial –out IntermediateCA.crt
 openssl genrsa –out Server.key 2048
 
 openssl req –new –key Server.key –out Server.csr
+
+# verify rsa key with cert
+KEY=
+CERT=
+diff <(openssl x509 -noout -modulus -in $CERT  | openssl md5 ) <(openssl rsa -noout -modulus -in $KEY | openssl md5) 
 ```
